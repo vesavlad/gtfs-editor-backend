@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='stoptime',
-            name='continuous_dropoff',
+            name='continuous_drop_off',
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
