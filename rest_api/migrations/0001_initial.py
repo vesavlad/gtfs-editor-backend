@@ -209,7 +209,7 @@ class Migration(migrations.Migration):
                 ('pickup_type', models.IntegerField(null=True)),
                 ('drop_off_type', models.IntegerField(null=True)),
                 ('continuous_pickup', models.IntegerField(null=True)),
-                ('continuous_dropoff', models.IntegerField(null=True)),
+                ('continuous_drop_off', models.IntegerField(null=True)),
                 ('shape_dist_traveled', models.FloatField(null=True)),
                 ('timepoint', models.IntegerField(null=True)),
                 ('stop', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='rest_api.Stop')),
