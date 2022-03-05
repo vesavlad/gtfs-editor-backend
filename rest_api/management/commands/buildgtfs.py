@@ -50,7 +50,7 @@ class Command(BaseCommand):
             'transfers': dict(viewset=TransferViewSet, required=False),
             'pathways': dict(viewset=PathwayViewSet, required=False),
             'levels': dict(viewset=LevelViewSet, required=False),
-            'feed_info': dict(viewset=FeedInfoViewSet, required=True),
+            'feed_info': dict(viewset=FeedInfoViewSet, required=False),
         }
         zf = zipfile.ZipFile(s, "w", zipfile.ZIP_DEFLATED, False)
         for gtfs_filename in files:

@@ -62,7 +62,7 @@ def upload_gtfs_file(project_pk, zip_file):
                                 uploader()._perform_upload(file_obj, project_pk)
                         except KeyError:
                             if uploader_filename in ['agency.txt', 'stops.txt', 'routes.txt', 'trips.txt',
-                                                     'stop_times.txt', 'calendar.txt', 'shapes.txt', 'feed_info.txt']:
+                                                     'stop_times.txt', 'calendar.txt', 'shapes.txt']:
                                 logger.error('file "{0}" is mandatory'.format(uploader_filename))
                                 raise ValidationError('{0} file is mandatory'.format(uploader_filename))
                             else:
