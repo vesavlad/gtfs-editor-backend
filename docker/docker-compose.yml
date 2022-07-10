@@ -39,9 +39,9 @@ services:
   nginx:
     build:
       context: ..
-      dockerfile: docker/nginx/NginxDockerfile
+      dockerfile: docker/nginx/Dockerfile
     ports:
-      - 8000:80
+      - "8000:80"
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media

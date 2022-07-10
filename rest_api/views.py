@@ -941,8 +941,13 @@ class StopTimeViewSet(CSVHandlerMixin,
             stop_id_map[row[0]] = row[1]
         sts = list()
         for row in chunk:
+            # if column is not present in csv_header is deleted
+            for attr in row.copy():
+                if attr not in self.Meta.csv_header:
+                    del row[attr]
             row['trip_id'] = trip_id_map[row['trip_id']]
             row['stop_id'] = stop_id_map[row['stop_id']]
+
             sts.append(StopTime(**row))
         t1 = time.time()
         StopTime.objects.bulk_create(sts, batch_size=1000)
