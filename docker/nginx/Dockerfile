@@ -2,7 +2,7 @@ FROM node:9.11.1-alpine as build-stage
 WORKDIR /app
 RUN apk update && apk upgrade && \
     apk add --no-cache git
-RUN git clone https://github.com/InspectorIncognito/gtfs-editor-frontend.git && \
+RUN git clone https://github.com/vesavlad/gtfs-editor-frontend.git && \
     cd gtfs-editor-frontend && git checkout dev && cd .. && \
     mv gtfs-editor-frontend/* . && \
     rm -r gtfs-editor-frontend
