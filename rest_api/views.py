@@ -423,11 +423,15 @@ class ShapeViewSet(MyModelViewSet):
         for row in shape_qs.filter(shape_id__in=shape_ids).distinct('shape_id').values_list('shape_id', 'id'):
             id_dict[row[0]] = row[1]
 
-        def dereference_shape_id(row):
+        def transform_data(row):
+            # dereference_shape_id
             row['shape_id'] = id_dict[row['shape_id']]
+            # replace '' with None to avoid type error
+            if 'shape_dist_traveled' in row:
+                row['shape_dist_traveled'] = None if row['shape_dist_traveled'] == '' else row['shape_dist_traveled']
             return row
 
-        ShapePoint.objects.bulk_create(map(lambda row: ShapePoint(**row), map(dereference_shape_id, chunk)))
+        ShapePoint.objects.bulk_create(map(lambda row: ShapePoint(**row), map(transform_data, chunk)))
 
     @action(methods=['put'], detail=False, parser_classes=(MultiPartParser, FileUploadParser))
     @transaction.atomic()
@@ -436,6 +440,10 @@ class ShapeViewSet(MyModelViewSet):
             return HttpResponse('Error: No file found', status=status.HTTP_400_BAD_REQUEST)
         file = request.FILES['file']
         self._perform_upload(file, kwargs['project_pk'])
+
+        project_obj = Project.objects.get(pk=kwargs['project_pk'])
+        project_obj.envelope = project_obj.get_envelope()
+        project_obj.save()
 
         return HttpResponse(content_type='text/plain')
 
@@ -628,6 +636,17 @@ class StopViewSet(CSVHandlerMixin,
         for k, v in stops.values_list(*values):
             resp[k] = v
         return Response(resp)
+
+    @action(methods=['put'], detail=False, parser_classes=(MultiPartParser, FileUploadParser))
+    @transaction.atomic()
+    def upload(self, request, *args, **kwargs):
+        response = super().upload(request, *args, **kwargs)
+
+        project_obj = Project.objects.get(pk=kwargs['project_pk'])
+        project_obj.envelope = project_obj.get_envelope()
+        project_obj.save()
+
+        return response
 
 
 class PathwayViewSet(CSVHandlerMixin,
